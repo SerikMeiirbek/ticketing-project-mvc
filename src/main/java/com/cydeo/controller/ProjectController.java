@@ -7,10 +7,7 @@ import com.cydeo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/project")
@@ -29,13 +26,13 @@ public class ProjectController {
 
         model.addAttribute("project", new ProjectDTO());
         model.addAttribute("projects", projectService.findAll());
-        model.addAttribute("managers", userService.findAll());
+        model.addAttribute("managers", userService.findManagers());
 
         return "/project/create";
     }
 
     @PostMapping("/create")
-    public String insertUser(@ModelAttribute("project") ProjectDTO project, Model model){
+    public String insertUser(@ModelAttribute("project") ProjectDTO project){
 
         projectService.save(project);
 
@@ -43,4 +40,35 @@ public class ProjectController {
 
     }
 
+    @GetMapping("/delete/{projectcode}")
+    public String deleteUser(@PathVariable("projectcode") String projectcode){
+
+        projectService.deleteById(projectcode);
+
+        return ("redirect:/project/create");
+    }
+
+    @GetMapping("/complete/{projectcode}")
+    public String completeProject(@PathVariable("projectcode") String projectcode){
+        projectService.complete(projectService.findById(projectcode));
+        return ("redirect:/project/create");
+    }
+
+    @GetMapping("/update/{projectcode}")
+    public String editProject(@PathVariable("projectcode") String projectcode, Model model){
+
+        model.addAttribute("project", projectService.findById(projectcode));
+        model.addAttribute("projects", projectService.findAll());
+        model.addAttribute("managers", userService.findManagers());
+
+        return "/project/update";
+    }
+
+    @PostMapping("/update" )
+    public String updateProject(@ModelAttribute ProjectDTO projectDTO){
+
+        projectService.update(projectDTO);
+
+        return ("redirect:/project/create");
+    }
 }
