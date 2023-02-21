@@ -5,10 +5,7 @@ import com.cydeo.service.ProjectService;
 import com.cydeo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/project")
@@ -36,6 +33,20 @@ public class ProjectController {
     public String projectCreate(@ModelAttribute("project") ProjectDTO project){
         System.out.println(project);
         projectService.save(project);
+        return "redirect:/project/create";
+    }
+
+    @GetMapping("/update/{projectCode}")
+    public String updateProject(@PathVariable("projectCode") String projectCode, Model model){
+        model.addAttribute("project", projectService.findById(projectCode));
+        model.addAttribute("projects", projectService.findAll());
+        model.addAttribute("managers", userService.findAll());
+        return "/project/update";
+    }
+
+    @PostMapping("/update")
+    public String updateProject(@ModelAttribute("project") ProjectDTO project){
+        projectService.update(project);
         return "redirect:/project/create";
     }
 
