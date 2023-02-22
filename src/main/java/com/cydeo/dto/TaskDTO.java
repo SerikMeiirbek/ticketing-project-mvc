@@ -8,7 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class TaskDTO {
@@ -23,6 +22,12 @@ public class TaskDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate assignedDate;
 
-
-
+    public TaskDTO(ProjectDTO project, UserDTO user, String taskSubject, String taskDetail, Status taskStatus, LocalDate assignedDate) {
+        this.project = project;
+        this.user = user;
+        this.taskSubject = taskSubject;
+        this.taskDetail = taskDetail;
+        this.taskStatus = taskStatus;
+        this.assignedDate = assignedDate;
+    }
 }

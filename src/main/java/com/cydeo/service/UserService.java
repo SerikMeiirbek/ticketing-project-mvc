@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface UserService extends CrudSerice<UserDTO, String>{
     List<UserDTO> findManagers();
+
+    List<UserDTO> findEmployees();
 }

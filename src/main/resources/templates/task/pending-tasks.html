@@ -41,14 +41,14 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                            <tr th:each="task : ${tasks}">
+                                                <td th:text="${task.project.projectCode}"></td>
+                                                <td th:text="${task.taskSubject}"></td>
+                                                <td th:text="${task.user.firstName} + ' ' + ${task.user.lastName}"></td>
+                                                <td th:text="${#temporals.format(task.assignedDate, 'MM.dd.yyyy')}"></td>
+                                                <td th:text="${task.taskStatus.getValue()}"></td>
                                                 <td>
-                                                    <a href="#" class="btn btn-warning rounded-0">Update</a>
+                                                    <a th:href="@{/task/updatePendingTask/{id} (id=${task.id})}" class="btn btn-warning rounded-0">Update</a>
                                                 </td>
                                             </tr>
                                             </tbody>
