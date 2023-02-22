@@ -45,7 +45,7 @@
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="projectcode" class="col-form-label">Project Code</label>
-                                                    <input id="projectcode" th:field="${project.projectCode}" type="text" class="form-control" placeholder="project code">
+                                                    <input id="projectcode" th:field="${project.projectCode}" type="text" class="form-control" placeholder="project code" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -130,8 +130,8 @@
                                             <tr th:each="project : ${projects}">
                                                 <td  th:text="${project.projectCode}"></td>
                                                 <td  th:text="${project.projectName}"></td>
-                                                <td  th:text="${project.startDate}"></td>
-                                                <td  th:text="${project.assignedManager.firstName} + ' ' +  ${project.assignedManager.lastName}"></td>
+                                                <td  th:text="${project.startDate} + '-' + ${project.endDate} "></td>
+                                                <td  th:text="${#temporals.format(project.startDate, 'MM.dd.yyyy')} + '-' + ${#temporals.format(project.endDate, 'MM.dd.yyyy')} "></td>
                                                 <td  th:text="${project.projectStatus.getValue()}"></td>
                                                 <td>
                                                     <a th:href="@{/project/update/{id} (id=${project.projectCode})}"><button type="button" class="btn btn-warning rounded-0">Update</button></a>

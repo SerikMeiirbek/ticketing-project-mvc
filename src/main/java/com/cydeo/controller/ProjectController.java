@@ -1,6 +1,7 @@
 package com.cydeo.controller;
 
 import com.cydeo.dto.ProjectDTO;
+import com.cydeo.entity.Status;
 import com.cydeo.service.ProjectService;
 import com.cydeo.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -24,14 +25,13 @@ public class ProjectController {
 
         model.addAttribute("project", new ProjectDTO());
         model.addAttribute("projects", projectService.findAll());
-        model.addAttribute("managers", userService.findAll());
+        model.addAttribute("managers", userService.findManagers());
 
         return "/project/create";
     }
 
     @PostMapping("/create")
     public String projectCreate(@ModelAttribute("project") ProjectDTO project){
-        System.out.println(project);
         projectService.save(project);
         return "redirect:/project/create";
     }
@@ -40,13 +40,26 @@ public class ProjectController {
     public String updateProject(@PathVariable("projectCode") String projectCode, Model model){
         model.addAttribute("project", projectService.findById(projectCode));
         model.addAttribute("projects", projectService.findAll());
-        model.addAttribute("managers", userService.findAll());
+        model.addAttribute("managers", userService.findManagers());
         return "/project/update";
     }
 
     @PostMapping("/update")
     public String updateProject(@ModelAttribute("project") ProjectDTO project){
+//        project.setProjectStatus(Status.OPEN);
         projectService.update(project);
+        return "redirect:/project/create";
+    }
+
+    @GetMapping("/delete/{projectCode}")
+    public String deleteProject(@PathVariable("projectCode") String projectCode){
+        projectService.deleteById(projectCode);
+        return "redirect:/project/create";
+    }
+
+    @GetMapping("/complete/{projectCode}")
+    public String completeProject(@PathVariable("projectCode") String projectCode){
+        projectService.complete(projectCode);
         return "redirect:/project/create";
     }
 
