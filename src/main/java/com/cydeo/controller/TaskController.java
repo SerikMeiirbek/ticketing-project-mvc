@@ -34,7 +34,6 @@ public class TaskController {
 
     @PostMapping("/create")
     public String createTask(@ModelAttribute TaskDTO taskDTO){
-        System.out.println(taskDTO);
         taskService.save(taskDTO);
         return "redirect:/task/create";
     }
@@ -84,5 +83,7 @@ public class TaskController {
     public String getArchiveTasks(Model model){
         return "/task/archive";
     }
+
+
 
 }
